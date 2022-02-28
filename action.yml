@@ -1,0 +1,8 @@
+name: 'action-ci-spfx'
+description: 'GitHub Action to build and test a spfx solution'
+runs:
+  using: "node14"
+  main: "dist/index.js"
+branding:
+  icon: 'upload'  
+  color: 'check-circle'
