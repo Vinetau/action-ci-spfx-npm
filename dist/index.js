@@ -1353,11 +1353,11 @@ function main() {
             core.info("(1/4) Install");
             yield exec_1.exec(`npm ci`);
             core.info("(2/4) Build");
-            yield exec_1.exec(`npm run bundle --ship`);
+            yield exec_1.exec(`npm run uat-bundle`);
             core.info("(3/4) Test");
             yield exec_1.exec(`npm run test`);
             core.info("(4/4) Package");
-            yield exec_1.exec(`npm run package-solution --ship`);
+            yield exec_1.exec(`npm run uat-package-solution`);
             core.info(`✅ complete`);
         }
         catch (err) {
