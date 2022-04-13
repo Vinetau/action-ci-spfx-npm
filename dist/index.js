@@ -1362,8 +1362,8 @@ function main() {
             core.info("(5/6) Package");
             yield exec_1.exec(`npm run uat-package-solution`);
             core.info("(6/6) Copy UAT artifact to UAT folder");
-            yield exec_1.exec(`mkdir SharePoint\\Solution\\UAT`);
-            yield exec_1.exec(`mv sharepoint\\solution\\*.sppkg SharePoint\\Solution\\UAT`);
+            yield exec_1.exec(`.\\mkdir sharesoint\\solution\\UAT`);
+            yield exec_1.exec(`.\\mv sharepoint\\solution\\*.sppkg SharePoint\\Solution\\UAT`);
             core.info(`✅ complete`);
             //Build PROD
             core.info("(1/4) Build");
@@ -1373,8 +1373,8 @@ function main() {
             core.info("(3/4) Package");
             yield exec_1.exec(`npm run prod-package-solution`);
             core.info("(4/4)Copy PROD artifact to PROD folder");
-            yield exec_1.exec(`mkdir SharePoint\\Solution\\PRODUCTION`);
-            yield exec_1.exec(`mv sharepoint\\solution\\*.sppkg SharePoint\\Solution\\PRODUCTION`);
+            yield exec_1.exec(`.\\mkdir sharepoint\\solution\\PRODUCTION`);
+            yield exec_1.exec(`.\\mv sharepoint\\solution\\*.sppkg SharePoint\\Solution\\PRODUCTION`);
             core.info(`✅ complete`);
         }
         catch (err) {
