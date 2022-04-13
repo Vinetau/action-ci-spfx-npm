@@ -1350,16 +1350,31 @@ function main() {
         try {
             const context = github.context;
             core.info(`Building and testing solution (ref: ${context.ref})...`);
-            core.info("(1/5) Install cross-env");
+            core.info("(1/6) Install cross-env");
             yield exec_1.exec(`npm i -g cross-env`);
-            core.info("(2/5) Install");
+            core.info("(2/6) Install");
             yield exec_1.exec(`npm ci`);
-            core.info("(3/5) Build");
+            //Build UAT
+            core.info("(3/6) Build");
             yield exec_1.exec(`npm run uat-bundle`);
-            core.info("(4/5) Test");
+            core.info("(4/6) Test");
             yield exec_1.exec(`npm run test`);
-            core.info("(5/5) Package");
+            core.info("(5/6) Package");
             yield exec_1.exec(`npm run uat-package-solution`);
+            core.info("(6/6) Copy UAT artifact to UAT folder");
+            yield exec_1.exec(`mkdir UAT`);
+            yield exec_1.exec(`mv *.sppkg UAT`);
+            core.info(`✅ complete`);
+            //Build PROD
+            core.info("(1/4) Build");
+            yield exec_1.exec(`npm run prod-bundle`);
+            core.info("(2/4) Test");
+            yield exec_1.exec(`npm run test`);
+            core.info("(3/4) Package");
+            yield exec_1.exec(`npm run prod-package-solution`);
+            core.info("(4/4)Copy PROD artifact to PROD folder");
+            yield exec_1.exec(`mkdir PRODUCTION`);
+            yield exec_1.exec(`mv *.sppkg PRODUCTION`);
             core.info(`✅ complete`);
         }
         catch (err) {

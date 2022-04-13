@@ -6,17 +6,33 @@ async function main() {
 	try {
 		const context = github.context;
 		core.info(`Building and testing solution (ref: ${context.ref})...`);
-		core.info("(1/5) Install cross-env");
+		core.info("(1/6) Install cross-env");
 		await exec(`npm i -g cross-env`);
-		core.info("(2/5) Install");
+		core.info("(2/6) Install");
 		await exec(`npm ci`);
-		core.info("(3/5) Build");
+		//Build UAT
+		core.info("(3/6) Build");
 		await exec(`npm run uat-bundle`);
-		core.info("(4/5) Test");
+		core.info("(4/6) Test");
 		await exec(`npm run test`);
-		core.info("(5/5) Package");
+		core.info("(5/6) Package");
 		await exec(`npm run uat-package-solution`);
+		core.info("(6/6) Copy UAT artifact to UAT folder");
+		await exec(`mkdir UAT`);
+		await exec(`mv *.sppkg UAT`);
 		core.info(`✅ complete`);
+		//Build PROD
+		core.info("(1/4) Build");
+		await exec(`npm run prod-bundle`);
+		core.info("(2/4) Test");
+		await exec(`npm run test`);
+		core.info("(3/4) Package");
+		await exec(`npm run prod-package-solution`);
+		core.info("(4/4)Copy PROD artifact to PROD folder");
+		await exec(`mkdir PRODUCTION`);
+		await exec(`mv *.sppkg PRODUCTION`);
+		core.info(`✅ complete`);
+
 	} catch (err) {
 		core.error("❌ Failed");
 		core.setFailed(err.message);
