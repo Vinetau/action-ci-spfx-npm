@@ -21,6 +21,8 @@ async function main() {
 		core.info("(5/6) Package");
 		await exec(`npm run uat-package-solution`);
 		core.info("(6/6) Copy UAT artifact to UAT folder");
+		await exec(`cd ${workspace}\\sharepoint\\solution`);
+		await exec(`ls`);
 		await exec(`mkdir ${workspace}\\sharepoint\\solution\\UAT`);
 		await exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg ${workspace}\\sharepoint\\solution\\UAT`);
 		core.info(`✅ complete`);

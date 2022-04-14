@@ -1364,6 +1364,8 @@ function main() {
             core.info("(5/6) Package");
             yield exec_1.exec(`npm run uat-package-solution`);
             core.info("(6/6) Copy UAT artifact to UAT folder");
+            yield exec_1.exec(`cd ${workspace}\\sharepoint\\solution`);
+            yield exec_1.exec(`ls`);
             yield exec_1.exec(`mkdir ${workspace}\\sharepoint\\solution\\UAT`);
             yield exec_1.exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg ${workspace}\\sharepoint\\solution\\UAT`);
             core.info(`✅ complete`);
