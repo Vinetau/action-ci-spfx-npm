@@ -2323,13 +2323,13 @@ function main() {
             //Make UAT folder
             yield io_1.mkdirP(`${workspace}\\sharepoint\\solution\\UAT`);
             //Find sppkg
-            const pattern = `${workspace}/*.sppkg`;
+            const pattern = `${workspace}\\*.sppkg`;
             const globber = yield glob.create(pattern);
             const uatfiles = yield globber.glob();
-            uatfiles.forEach(file => {
-                core.info(`Found sppkg: ${file} - moving to UAT folder`);
-                io_1.mv(file, `${workspace}\\sharepoint\\solution\\UAT`);
-            });
+            for (var i = 0; i < uatfiles.length; i++) {
+                core.info(`Found sppkg: ${uatfiles[i]} - moving to UAT folder`);
+                yield io_1.mv(uatfiles[i], `${workspace}\\sharepoint\\solution\\UAT`);
+            }
             core.info(`✅ complete`);
             //Build PROD
             core.info("(1/4) Build");
