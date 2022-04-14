@@ -3,9 +3,12 @@ import { exec } from "@actions/exec";
 import * as github from "@actions/github";
 
 async function main() {
+	
 	try {
 		const context = github.context;
+		var workspace = process.env.GITHUB_WORKSPACE;
 		core.info(`Building and testing solution (ref: ${context.ref})...`);
+		core.info(`Working directory: ${workspace}...`);
 		core.info("(1/6) Install cross-env");
 		await exec(`npm i -g cross-env`);
 		core.info("(2/6) Install");
@@ -18,8 +21,8 @@ async function main() {
 		core.info("(5/6) Package");
 		await exec(`npm run uat-package-solution`);
 		core.info("(6/6) Copy UAT artifact to UAT folder");
-		await exec(`.\\mkdir sharesoint\\solution\\UAT`);
-		await exec(`.\\mv sharepoint\\solution\\*.sppkg SharePoint\\Solution\\UAT`);
+		await exec(`mkdir ${workspace}\\sharesoint\\solution\\UAT`);
+		await exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg SharePoint\\Solution\\UAT`);
 		core.info(`✅ complete`);
 		//Build PROD
 		core.info("(1/4) Build");
@@ -29,8 +32,8 @@ async function main() {
 		core.info("(3/4) Package");
 		await exec(`npm run prod-package-solution`);
 		core.info("(4/4)Copy PROD artifact to PROD folder");
-		await exec(`.\\mkdir sharepoint\\solution\\PRODUCTION`);
-		await exec(`.\\mv sharepoint\\solution\\*.sppkg SharePoint\\Solution\\PRODUCTION`);
+		await exec(`mkdir ${workspace}\\sharepoint\\solution\\PRODUCTION`);
+		await exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg SharePoint\\Solution\\PRODUCTION`);
 		core.info(`✅ complete`);
 
 	} catch (err) {
