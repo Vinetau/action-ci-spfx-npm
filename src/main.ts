@@ -21,8 +21,8 @@ async function main() {
 		core.info("(5/6) Package");
 		await exec(`npm run uat-package-solution`);
 		core.info("(6/6) Copy UAT artifact to UAT folder");
-		await exec(`mkdir ${workspace}\\sharesoint\\solution\\UAT`);
-		await exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg SharePoint\\Solution\\UAT`);
+		await exec(`mkdir ${workspace}\\sharepoint\\solution\\UAT`);
+		await exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg ${workspace}\\sharepoint\\solution\\UAT`);
 		core.info(`✅ complete`);
 		//Build PROD
 		core.info("(1/4) Build");
@@ -33,7 +33,7 @@ async function main() {
 		await exec(`npm run prod-package-solution`);
 		core.info("(4/4)Copy PROD artifact to PROD folder");
 		await exec(`mkdir ${workspace}\\sharepoint\\solution\\PRODUCTION`);
-		await exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg SharePoint\\Solution\\PRODUCTION`);
+		await exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg ${workspace}\\sharepoint\\solution\\PRODUCTION`);
 		core.info(`✅ complete`);
 
 	} catch (err) {
