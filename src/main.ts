@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
 import { exec } from "@actions/exec";
 import { mkdirP, mv } from "@actions/io";
+import * as glob from "@actions/glob";
 import * as github from "@actions/github";
 
 async function main() {
@@ -22,8 +23,16 @@ async function main() {
 		core.info("(5/6) Package");
 		await exec(`npm run uat-package-solution`);
 		core.info("(6/6) Copy UAT artifact to UAT folder");
+		//Make UAT folder
 		await mkdirP(`${workspace}\\sharepoint\\solution\\UAT`);
-		await mv(`${workspace}\\sharepoint\\solution\\*.sppkg`, `${workspace}\\sharepoint\\solution\\UAT`);
+		//Find sppkg
+		const pattern = '**/*.sppkg';
+		const globber = await glob.create(pattern);
+		const files = await globber.glob()
+		files.forEach(file => {
+			core.info(`Found sppkg: ${file}`);
+			mv(file, `${workspace}\\sharepoint\\solution\\UAT`);
+		});
 		core.info(`✅ complete`);
 		//Build PROD
 		core.info("(1/4) Build");
@@ -33,8 +42,8 @@ async function main() {
 		core.info("(3/4) Package");
 		await exec(`npm run prod-package-solution`);
 		core.info("(4/4)Copy PROD artifact to PROD folder");
-		await mkdirP(`${workspace}\\sharepoint\\solution\\PRODUCTION`);
-		await mv(`${workspace}\\sharepoint\\solution\\*.sppkg`, `${workspace}\\sharepoint\\solution\\PRODUCTION`);
+		//await mkdirP(`${workspace}\\sharepoint\\solution\\PRODUCTION`);
+		//await mv(`${workspace}\\sharepoint\\solution\\*.sppkg`, `${workspace}\\sharepoint\\solution\\PRODUCTION`);
 		core.info(`✅ complete`);
 
 	} catch (err) {
