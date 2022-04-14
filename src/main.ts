@@ -26,11 +26,11 @@ async function main() {
 		//Make UAT folder
 		await mkdirP(`${workspace}\\sharepoint\\solution\\UAT`);
 		//Find sppkg
-		const pattern = '**/*.sppkg';
+		const pattern = `${workspace}/*.sppkg`;
 		const globber = await glob.create(pattern);
-		const files = await globber.glob()
-		files.forEach(file => {
-			core.info(`Found sppkg: ${file}`);
+		const uatfiles = await globber.glob()
+		uatfiles.forEach(file => {
+			core.info(`Found sppkg: ${file} - moving to UAT folder`);
 			mv(file, `${workspace}\\sharepoint\\solution\\UAT`);
 		});
 		core.info(`✅ complete`);
@@ -42,8 +42,13 @@ async function main() {
 		core.info("(3/4) Package");
 		await exec(`npm run prod-package-solution`);
 		core.info("(4/4)Copy PROD artifact to PROD folder");
-		//await mkdirP(`${workspace}\\sharepoint\\solution\\PRODUCTION`);
-		//await mv(`${workspace}\\sharepoint\\solution\\*.sppkg`, `${workspace}\\sharepoint\\solution\\PRODUCTION`);
+		//Find sppkg
+		await mkdirP(`${workspace}\\sharepoint\\solution\\PRODUCTION`);
+		const prodfiles = await globber.glob()
+		prodfiles.forEach(file => {
+			core.info(`Found sppkg: ${file} - moving to PRODUCTION folder`);
+			mv(file, `${workspace}\\sharepoint\\solution\\PRODUCTION`);
+		});
 		core.info(`✅ complete`);
 
 	} catch (err) {

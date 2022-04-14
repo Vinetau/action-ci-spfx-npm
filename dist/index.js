@@ -2323,11 +2323,11 @@ function main() {
             //Make UAT folder
             yield io_1.mkdirP(`${workspace}\\sharepoint\\solution\\UAT`);
             //Find sppkg
-            const pattern = '**/*.sppkg';
+            const pattern = `${workspace}/*.sppkg`;
             const globber = yield glob.create(pattern);
-            const files = yield globber.glob();
-            files.forEach(file => {
-                core.info(`Found sppkg: ${file}`);
+            const uatfiles = yield globber.glob();
+            uatfiles.forEach(file => {
+                core.info(`Found sppkg: ${file} - moving to UAT folder`);
                 io_1.mv(file, `${workspace}\\sharepoint\\solution\\UAT`);
             });
             core.info(`✅ complete`);
@@ -2339,8 +2339,13 @@ function main() {
             core.info("(3/4) Package");
             yield exec_1.exec(`npm run prod-package-solution`);
             core.info("(4/4)Copy PROD artifact to PROD folder");
-            //await mkdirP(`${workspace}\\sharepoint\\solution\\PRODUCTION`);
-            //await mv(`${workspace}\\sharepoint\\solution\\*.sppkg`, `${workspace}\\sharepoint\\solution\\PRODUCTION`);
+            //Find sppkg
+            yield io_1.mkdirP(`${workspace}\\sharepoint\\solution\\PRODUCTION`);
+            const prodfiles = yield globber.glob();
+            prodfiles.forEach(file => {
+                core.info(`Found sppkg: ${file} - moving to PRODUCTION folder`);
+                io_1.mv(file, `${workspace}\\sharepoint\\solution\\PRODUCTION`);
+            });
             core.info(`✅ complete`);
         }
         catch (err) {
