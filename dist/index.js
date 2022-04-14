@@ -1344,6 +1344,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const exec_1 = __webpack_require__(986);
+const io_1 = __webpack_require__(1);
 const github = __importStar(__webpack_require__(469));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -1364,10 +1365,8 @@ function main() {
             core.info("(5/6) Package");
             yield exec_1.exec(`npm run uat-package-solution`);
             core.info("(6/6) Copy UAT artifact to UAT folder");
-            yield exec_1.exec(`cd ${workspace}\\sharepoint\\solution`);
-            yield exec_1.exec(`ls`);
-            yield exec_1.exec(`mkdir ${workspace}\\sharepoint\\solution\\UAT`);
-            yield exec_1.exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg ${workspace}\\sharepoint\\solution\\UAT`);
+            yield io_1.mkdirP(`${workspace}\\sharepoint\\solution\\UAT`);
+            yield io_1.mv(`${workspace}\\sharepoint\\solution\\*.sppkg`, `${workspace}\\sharepoint\\solution\\UAT`);
             core.info(`✅ complete`);
             //Build PROD
             core.info("(1/4) Build");
@@ -1377,8 +1376,8 @@ function main() {
             core.info("(3/4) Package");
             yield exec_1.exec(`npm run prod-package-solution`);
             core.info("(4/4)Copy PROD artifact to PROD folder");
-            yield exec_1.exec(`mkdir ${workspace}\\sharepoint\\solution\\PRODUCTION`);
-            yield exec_1.exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg ${workspace}\\sharepoint\\solution\\PRODUCTION`);
+            yield io_1.mkdirP(`${workspace}\\sharepoint\\solution\\PRODUCTION`);
+            yield io_1.mv(`${workspace}\\sharepoint\\solution\\*.sppkg`, `${workspace}\\sharepoint\\solution\\PRODUCTION`);
             core.info(`✅ complete`);
         }
         catch (err) {

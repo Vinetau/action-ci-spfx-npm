@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import { exec } from "@actions/exec";
+import { mkdirP, mv } from "@actions/io";
 import * as github from "@actions/github";
 
 async function main() {
@@ -21,10 +22,8 @@ async function main() {
 		core.info("(5/6) Package");
 		await exec(`npm run uat-package-solution`);
 		core.info("(6/6) Copy UAT artifact to UAT folder");
-		await exec(`cd ${workspace}\\sharepoint\\solution`);
-		await exec(`ls`);
-		await exec(`mkdir ${workspace}\\sharepoint\\solution\\UAT`);
-		await exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg ${workspace}\\sharepoint\\solution\\UAT`);
+		await mkdirP(`${workspace}\\sharepoint\\solution\\UAT`);
+		await mv(`${workspace}\\sharepoint\\solution\\*.sppkg`, `${workspace}\\sharepoint\\solution\\UAT`);
 		core.info(`✅ complete`);
 		//Build PROD
 		core.info("(1/4) Build");
@@ -34,8 +33,8 @@ async function main() {
 		core.info("(3/4) Package");
 		await exec(`npm run prod-package-solution`);
 		core.info("(4/4)Copy PROD artifact to PROD folder");
-		await exec(`mkdir ${workspace}\\sharepoint\\solution\\PRODUCTION`);
-		await exec(`mv ${workspace}\\sharepoint\\solution\\*.sppkg ${workspace}\\sharepoint\\solution\\PRODUCTION`);
+		await mkdirP(`${workspace}\\sharepoint\\solution\\PRODUCTION`);
+		await mv(`${workspace}\\sharepoint\\solution\\*.sppkg`, `${workspace}\\sharepoint\\solution\\PRODUCTION`);
 		core.info(`✅ complete`);
 
 	} catch (err) {
