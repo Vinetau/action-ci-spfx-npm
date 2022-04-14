@@ -26,9 +26,12 @@ async function main() {
 		//Make UAT folder
 		await mkdirP(`${workspace}\\sharepoint\\solution\\UAT`);
 		//Find sppkg
-		const pattern = `${workspace}\\*.sppkg`;
+		const pattern = `${workspace}\\sharepoint\\solution\\*.sppkg`;
 		const globber = await glob.create(pattern);
 		const uatfiles = await globber.glob()
+		if(uatfiles.length === 0) {
+			core.info(`No sppkg artifact found`);
+		}
 		for(var i = 0; i < uatfiles.length; i++) {
 			core.info(`Found sppkg: ${uatfiles[i]} - moving to UAT folder`);
 			await mv(uatfiles[i], `${workspace}\\sharepoint\\solution\\UAT`);
@@ -45,10 +48,13 @@ async function main() {
 		//Find sppkg
 		await mkdirP(`${workspace}\\sharepoint\\solution\\PRODUCTION`);
 		const prodfiles = await globber.glob()
-		prodfiles.forEach(file => {
-			core.info(`Found sppkg: ${file} - moving to PRODUCTION folder`);
-			mv(file, `${workspace}\\sharepoint\\solution\\PRODUCTION`);
-		});
+		if(prodfiles.length === 0) {
+			core.info(`No sppkg artifact found`);
+		}
+		for(var i = 0; i < prodfiles.length; i++) {
+			core.info(`Found sppkg: ${prodfiles[i]} - moving to PRODUCTION folder`);
+			await mv(prodfiles[i], `${workspace}\\sharepoint\\solution\\PRODUCTION`);
+		}
 		core.info(`✅ complete`);
 
 	} catch (err) {
