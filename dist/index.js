@@ -2308,18 +2308,16 @@ function main() {
             var workspace = process.env.GITHUB_WORKSPACE;
             core.info(`Building and testing solution (ref: ${context.ref})...`);
             core.info(`Working directory: ${workspace}...`);
-            core.info("(1/6) Install cross-env");
+            core.info("(1/5) Install cross-env");
             yield exec_1.exec(`npm i -g cross-env`);
-            core.info("(2/6) Install");
+            core.info("(2/5) Install");
             yield exec_1.exec(`npm ci`);
             //Build UAT
-            core.info("(3/6) Build");
+            core.info("(3/5) Build");
             yield exec_1.exec(`npm run uat-bundle`);
-            core.info("(4/6) Test");
-            yield exec_1.exec(`npm run test`);
-            core.info("(5/6) Package");
+            core.info("(4/5) Package");
             yield exec_1.exec(`npm run uat-package-solution`);
-            core.info("(6/6) Copy UAT artifact to UAT folder");
+            core.info("(5/5) Copy UAT artifact to UAT folder");
             //Make UAT folder
             yield io_1.mkdirP(`${workspace}\\sharepoint\\solution\\UAT`);
             //Find sppkg
@@ -2335,13 +2333,11 @@ function main() {
             }
             core.info(`✅ complete`);
             //Build PROD
-            core.info("(1/4) Build");
+            core.info("(1/3) Build");
             yield exec_1.exec(`npm run prod-bundle`);
-            core.info("(2/4) Test");
-            yield exec_1.exec(`npm run test`);
-            core.info("(3/4) Package");
+            core.info("(2/3) Package");
             yield exec_1.exec(`npm run prod-package-solution`);
-            core.info("(4/4)Copy PROD artifact to PROD folder");
+            core.info("(3/3)Copy PROD artifact to PROD folder");
             //Find sppkg
             yield io_1.mkdirP(`${workspace}\\sharepoint\\solution\\PRODUCTION`);
             const prodfiles = yield globber.glob();
